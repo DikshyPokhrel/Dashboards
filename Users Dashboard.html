@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+<style>
+  .callbacks-table-wrapper {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  .top-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .top-controls button {
+    background: #3b82f6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
+  .top-controls input {
+    padding: 0.5rem;
+    width: 250px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+#pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  user-select: none;
+}
+
+#pagination button,
+#pagination span.page-num {
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  min-width: 30px;
+  text-align: center;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+#pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+#pagination span.page-num.active {
+  background: blue;
+  color: white;
+  border-color: blue;
+  cursor: default;
+}
+
+#pagination button:not(:disabled):hover,
+#pagination span.page-num:not(.active):hover {
+  background-color: lightblue;
+  color: #fff;
+  border-color: lightblue;
+}
+
+
+  .content-section {
+    display: none;
+  }
+  .content-section.active {
+    display: block;
+  }
+</style>
+
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>User Dashboard</h2>
+      <nav>
+        <a href="#" id="navCallbacks" class="active" onclick="showSection('callbacks')">Callbacks</a>
+        <a href="#" id="navProfile" onclick="showSection('profile')">Profile Info</a>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <header>
+        <h1>Hi, Spongebob</h1>
+        <div class="user-info">
+          <button class="btn-logout" id="logoutBtn">Logout</button>
+        </div>
+      </header>
+      <section id="callbacks" class="content-section active">
+        <h2>Callbacks Table</h2>
+        <div class="top-controls">
+          <button onclick="addNewRow()">➕ Upload Row</button>
+          <input type="text" id="searchBox" placeholder="Search" />
+        </div>
+        <div class="callbacks-table-wrapper">
+          <table id="callbacksTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Website</th>
+                <th>Remarks</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td>2025-07-01</td>
+                <td>Patrick Star</td>
+                <td>patrick@example.com</td>
+                <td>+987 111 222</td>
+                <td>Bikini Bottom Rock</td>
+                <td><a href="https://patrick.example.com" target="_blank">patrick.example.com</a></td>
+                <td><select><option>Pending</option><option>Completed</option><option>Cancelled</option></select></td>
+                <td><textarea placeholder="Enter notes..."></textarea></td>
+                <td class="actions">
+                  <span class="btn-action" tabindex="0">✏️ Edit</span>
+                  <span class="btn-action" tabindex="0">🗑️ Delete</span>
+                </td>
+              </tr>
+              <tr>
+                <td>2025-07-02</td>
+                <td>Sandy Cheeks</td>
+                <td>sandy@example.com</td>
+                <td>+987 333 444</td>
+                <td>Tree Dome</td>
+                <td><a href="https://sandy.example.com" target="_blank">sandy.example.com</a></td>
+                <td><select><option>Pending</option><option>Completed</option><option>Cancelled</option></select></td>
+                <td><textarea placeholder="Enter notes..."></textarea></td>
+                <td class="actions">
+                  <span class="btn-action" tabindex="0">✏️ Edit</span>
+                  <span class="btn-action" tabindex="0">🗑️ Delete</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="pagination"></div>
+        <div style="text-align:right; margin-top:1rem;">
+          <button id="saveBtn" onclick="saveTable()" style="background:green; color:white; padding:0.5rem 1.2rem; border-radius:6px; font-weight:600; display:none;">Save</button>
+        </div>
+      </section>
+      <section id="profile" class="content-section">
+        <h1>Hello, Spongebob Squarepants</h1>
+        <p><strong>Email:</strong> spongebob@bikinibottom.com</p>
+        <p><strong>Phone:</strong> +987 654 321</p>
+        <p><strong>Membership:</strong> Gold</p>
+        <p><strong>Location:</strong> Bikini Bottom</p>
+      </section>
+    </main>
+  </div>
+  <script>
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    function updatePagination() {
+      const rows = document.querySelectorAll("#tableBody tr");
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+      if (totalPages === 0) {
+        document.getElementById('pagination').innerHTML = '';
+        return;
+      }
+      let paginationHTML = '';
+      paginationHTML += `<button onclick="prevPage()" ${currentPage === 1 ? 'disabled' : ''}>&lt;</button>`;
+      const maxPageButtons = 7;
+      if (totalPages <= maxPageButtons) {
+        for (let i = 1; i <= totalPages; i++) {
+          paginationHTML += `<span class="page-num${i === currentPage ? ' active' : ''}" onclick="goToPage(${i})">${i}</span>`;
+        }
+      } else {
+        const pageSet = new Set();
+        pageSet.add(1);
+        pageSet.add(2);
+        pageSet.add(totalPages);
+        pageSet.add(totalPages - 1);
+        pageSet.add(currentPage);
+        if (currentPage - 1 > 2) pageSet.add(currentPage - 1);
+        if (currentPage + 1 < totalPages - 1) pageSet.add(currentPage + 1);
+        const pagesToShow = Array.from(pageSet).filter(p => p >= 1 && p <= totalPages).sort((a, b) => a - b);
+        let lastPage = 0;
+        for (const page of pagesToShow) {
+          if (page - lastPage > 1) {
+            paginationHTML += `<span class="page-num">...</span>`;
+          }
+          paginationHTML += `<span class="page-num${page === currentPage ? ' active' : ''}" onclick="goToPage(${page})">${page}</span>`;
+          lastPage = page;
+        }
+      }
+      paginationHTML += `<button onclick="nextPage()" ${currentPage === totalPages ? 'disabled' : ''}>&gt;</button>`;
+      document.getElementById('pagination').innerHTML = paginationHTML;
+      rows.forEach((row, i) => {
+        row.style.display = i >= (currentPage - 1) * rowsPerPage && i < currentPage * rowsPerPage ? '' : 'none';
+      });
+    }
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+      }
+    }
+    function nextPage() {
+      const rows = document.querySelectorAll("#tableBody tr");
+      const totalPages = Math.ceil(rows.length / rowsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+      }
+    }
+    function goToPage(page) {
+      currentPage = page;
+      updatePagination();
+    }
+    function addNewRow() {
+      const tbody = document.getElementById("tableBody");
+      const newRow = document.createElement("tr");
+      newRow.innerHTML = `
+        <td><input type="date" /></td>
+        <td><input type="text" placeholder="Name" /></td>
+        <td><input type="email" placeholder="Email" /></td>
+        <td><input type="text" placeholder="Phone" /></td>
+        <td><input type="text" placeholder="Address" /></td>
+        <td><input type="url" placeholder="Website" /></td>
+        <td><select><option>⏳</option><option>✔</option><option>✖</option></select></td>
+        <td><textarea placeholder="Notes"></textarea></td>
+        <td><button onclick="editRow(this)">Edit</button></td>
+      `;
+      tbody.appendChild(newRow);
+      document.getElementById('saveBtn').style.display = 'inline-block';
+      updatePagination();
+    }
+    function editRow(btn) {
+      const row = btn.closest("tr");
+      const cells = row.querySelectorAll("td");
+      cells.forEach((cell, index) => {
+        if (index < 6 && !cell.querySelector("input")) {
+          const val = cell.innerText || "";
+          const input = document.createElement("input");
+          input.value = val;
+          cell.innerHTML = "";
+          cell.appendChild(input);
+        }
+      });
+    }
+    function saveTable() {
+      alert("Saved successfully!");
+      document.getElementById('saveBtn').style.display = 'none';
+    }
+    document.getElementById("searchBox").addEventListener("input", function () {
+      const value = this.value.toLowerCase();
+      document.querySelectorAll("#tableBody tr").forEach(row => {
+        const name = row.children[1].textContent.toLowerCase();
+        row.style.display = name.includes(value) ? "" : "none";
+      });
+      currentPage = 1;
+      updatePagination();
+    });
+    function showSection(sectionId) {
+      document.querySelectorAll(".content-section").forEach(s => s.classList.remove("active"));
+      document.getElementById(sectionId).classList.add("active");
+      document.querySelectorAll(".sidebar nav a").forEach(a => a.classList.remove("active"));
+      document.querySelector(`#nav${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}`).classList.add("active");
+    }
+    updatePagination();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

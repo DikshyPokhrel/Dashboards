@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Manager Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>Manager</h2>
+      <nav>
+        <a href="#services" class="active">Manage Services</a>
+        <a href="#appointments">Appointments</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header>
+        <div>
+          <h1 id="managerTitle">Loading...</h1>
+          <p id="managerGreeting" style="color:#2563eb; font-weight:600; margin: 0.2rem 0 0;"></p>
+        </div>
+        <div>
+          <button class="btn-back" id="backToAdmin">← Back to Admin Dashboard</button>
+          <button class="btn-logout" id="logoutBtn">Logout</button>
+        </div>
+      </header>
+
+      <section id="services">
+        <h2>Manage Services</h2>
+        <button class="create-btn">➕ Add New Service</button>
+        <table id="servicesTable">
+          <thead>
+            <tr>
+              <th>Service Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="appointments">
+        <h2>Appointments</h2>
+        <button class="create-btn">➕ Add Appointment</button>
+        <table id="appointmentsTable">
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Service</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+  const managerData = {
+    "mickey@disney.com": {
+      name: "Mickey Mouse",
+      services: [
+        { name: "Cartoon Drawing", category: "Art", price: "$100" },
+        { name: "Character Voice", category: "Entertainment", price: "$80" }
+      ],
+      appointments: [
+        { client: "Donald Duck", service: "Cartoon Drawing", date: "2025-07-15", time: "10:00 AM" },
+        { client: "Goofy", service: "Character Voice", date: "2025-07-16", time: "2:00 PM" }
+      ]
+    },
+    "catnoir@miraculous.com": {
+      name: "Catnoir",
+      services: [
+        { name: "Superhero Training", category: "Fitness", price: "$150" },
+        { name: "Combat Skills", category: "Defense", price: "$120" }
+      ],
+      appointments: [
+        { client: "Ladybug", service: "Superhero Training", date: "2025-07-20", time: "11:00 AM" },
+        { client: "Alya", service: "Combat Skills", date: "2025-07-21", time: "3:00 PM" }
+      ]
+    },
+    "scooby@scoobydoo.com": {
+      name: "Scooby Doo",
+      services: [
+        { name: "Mystery Solving", category: "Investigation", price: "$200" },
+        { name: "Snack Delivery", category: "Service", price: "$30" }
+      ],
+      appointments: [
+        { client: "Shaggy", service: "Mystery Solving", date: "2025-07-25", time: "1:00 PM" },
+        { client: "Velma", service: "Snack Delivery", date: "2025-07-26", time: "4:00 PM" }
+      ]
+    }
+  };
+
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  function fillTable(tableId, data, columns) {
+    const tbody = document.querySelector(`#${tableId} tbody`);
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    data.forEach(item => {
+      const tr = document.createElement('tr');
+
+      columns.forEach(col => {
+        const td = document.createElement('td');
+        td.textContent = item[col] || "";
+        tr.appendChild(td);
+      });
+
+      const actionsTd = document.createElement('td');
+      actionsTd.className = 'actions';
+
+      const editSpan = document.createElement('span');
+      editSpan.className = 'edit';
+      editSpan.style.cursor = 'pointer';
+      editSpan.textContent = '✏️ Edit';
+      editSpan.addEventListener('click', () => {
+        console.log("Edit clicked for:", item.name || item.client);
+        alert("Edit feature coming soon!");
+      });
+
+      const deleteSpan = document.createElement('span');
+      deleteSpan.className = 'delete';
+      deleteSpan.style.cursor = 'pointer';
+      deleteSpan.textContent = 'Delete';
+      deleteSpan.addEventListener('click', () => {
+        const confirmDelete = confirm("Are you 100% sure?");
+        if (confirmDelete) {
+          alert("Deleted successfully.");
+          tr.remove();
+        }
+      });
+
+      actionsTd.appendChild(editSpan);
+      actionsTd.appendChild(deleteSpan);
+      tr.appendChild(actionsTd);
+      tbody.appendChild(tr);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const managerEmail = getQueryParam('manager');
+    const greetingEl = document.getElementById('managerGreeting');
+    const titleEl = document.getElementById('managerTitle');
+    const backBtn = document.getElementById('backToAdmin');
+
+    if (!managerEmail || !managerData[managerEmail]) {
+      titleEl.textContent = "Manager not found.";
+      document.querySelector('main').style.display = 'none';
+      return;
+    }
+
+    const manager = managerData[managerEmail];
+    titleEl.textContent = `Hello, ${manager.name}!`;
+    greetingEl.textContent = "";
+
+    fillTable("servicesTable", manager.services, ["name", "category", "price"]);
+    fillTable("appointmentsTable", manager.appointments, ["client", "service", "date", "time"]);
+
+    backBtn.addEventListener('click', () => {
+      window.location.href = 'Admin Dashboard.html';
+    });
+  });
+</script>
+
+  <script src="script.js"></script>
+</body>
+</html>

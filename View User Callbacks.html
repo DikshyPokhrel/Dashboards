@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>User Callbacks</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+
+    header {
+      background-color: navy;
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid lightblue;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    main {
+      padding: 2rem;
+    }
+
+    h2 {
+      color: #1e3a8a;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(59, 130, 246, 0.15);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid white;
+    }
+
+    thead {
+      background-color: whitesmoke;
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: whitesmoke;
+    }
+
+    tbody tr:hover {
+      background-color: whitesmoke;
+    }
+
+    input {
+      border: none;
+      width: 100%;
+      background: transparent;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    input:focus {
+      outline: none;
+      background-color: white;
+      border-bottom: 1px solid blue;
+    }
+
+    .btn-logout {
+      background-color: red;
+      border: none;
+      padding: 0.5rem 1.1rem;
+      color: white;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1rem;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.6);
+    }
+
+    .btn-logout:hover {
+      background-color: darkred;
+      box-shadow: 0 6px 15px rgba(220, 38, 38, 0.7);
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .btn-group {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Callbacks for: Spongebob Squarepants</h1>
+    <button class="btn-logout" onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <div class="btn-group">
+      <button onclick="goBack()" class="btn-back">← Back to Dashboard</button>
+      <button onclick="saveData()" class="btn-back">💾 Save Changes</button>
+    </div>
+
+    <h2>Callback List (7 entries)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>Website</th>
+          <th>Remarks</th>
+          <th>Notes</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userEmail = urlParams.get('user');
+
+    const callbackData = {
+      "spongebob@bikinibottom.com": {
+        name: "Spongebob Squarepants",
+        entries: [
+          ["Spongebob Squarepants", "Bikini Bottom", "9841234567", "https://krustykrab.com", "Interested", "Call again at 5pm", "2025-07-05"],
+          ["Patrick Star", "Under a rock", "9800000001", "https://patrickworld.com", "Busy", "Follow-up next week", "2025-07-06"],
+          ["Squidward Tentacles", "Bikini Bottom", "9823344556", "https://clarinet.com", "Not interested", "No calls", "2025-07-07"],
+          ["Sandy Cheeks", "Texas Dome", "9811123456", "https://texas.com", "Wants callback", "Send samples", "2025-07-08"],
+          ["Mr. Krabs", "Krusty Krab", "9845678901", "https://krustykrab.com", "Interested", "Discount offered", "2025-07-09"]
+        ]
+      },
+      "tom@catandmouse.com": {
+        name: "Tom Cat",
+        entries: [
+          ["Tom Cat", "House Backyard", "9811112233", "https://tomandjerry.com", "No answer", "Try in morning", "2025-07-07"],
+          ["Jerry Mouse", "Mousehole", "9809988776", "https://jerryhideout.com", "Confirmed", "Booked for Thursday", "2025-07-08"],
+          ["Spike Bulldog", "Doghouse", "9833334444", "https://doghouse.com", "Interested", "Meeting on Friday", "2025-07-09"]
+        ]
+      },
+      "jerry@catandmouse.com": {
+        name: "Jerry Mouse",
+        entries: [
+          ["Jerry Mouse", "Mousehole", "9809988776", "https://jerryhideout.com", "Confirmed", "Booked for Thursday", "2025-07-08"],
+          ["Tom Cat", "House Backyard", "9811112233", "https://tomandjerry.com", "No answer", "Try in morning", "2025-07-07"]
+        ]
+      },
+      "bubbles@powerpuffgirls.com": {
+        name: "Bubbles",
+        entries: [
+          ["Bubbles", "Townsville", "9845432123", "https://powerpuffgirls.com", "Needs info", "Send email", "2025-07-08"],
+          ["Blossom", "Townsville", "9841112233", "https://powerpuffgirls.com", "Interested", "Follow-up call", "2025-07-09"],
+          ["Buttercup", "Townsville", "9842223344", "https://powerpuffgirls.com", "Not available", "Try later", "2025-07-10"]
+        ]
+      }
+    };
+
+    if (userEmail && callbackData[userEmail]) {
+      const user = callbackData[userEmail];
+      document.querySelector("h1").textContent = `Callbacks for: ${user.name}`;
+
+      const callbackCount = user.entries.length;
+      document.querySelector("h2").textContent = `Callback List (${callbackCount} entr${callbackCount === 1 ? 'y' : 'ies'})`;
+
+      const tbody = document.querySelector("tbody");
+      tbody.innerHTML = "";
+
+      user.entries.forEach(row => {
+        const tr = document.createElement("tr");
+        row.forEach(cell => {
+          const td = document.createElement("td");
+          const input = document.createElement("input");
+          input.value = cell;
+          td.appendChild(input);
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    } else {
+      const mainElem = document.querySelector("main");
+      if (mainElem) {
+        mainElem.innerHTML = `<h2>User not found or no callback data available.</h2>`;
+      }
+    }
+  });
+
+  function goBack() {
+    window.location.href = 'Admin Dashboard.html'; 
+  }
+
+  function saveData() {
+    alert("Your callback updates have been saved.");
+  }
+</script>
+<script src="script.js"></script>
+</body>
+</html>

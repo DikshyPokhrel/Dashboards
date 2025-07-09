@@ -1,0 +1,576 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: white;
+  color: navy;
+}
+
+.login-container {
+  display: flex;
+  background-color: navy;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, lightblue, navy);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-left h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  letter-spacing: 5px;
+  font-weight: 900;
+}
+
+.login-left p {
+  font-size: 1.2rem;
+  max-width: 320px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.login-right {
+  flex: 1;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 3rem;
+  box-shadow: -6px 0 20px rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 1;
+}
+
+              
+    .login-form {
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .login-form h2 {
+      margin-bottom: 2rem;
+      color: navy;
+      font-weight: 700;
+      font-size: 1.8rem;
+}
+
+.login-form label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: gray;
+}
+
+.login-form input,
+.login-form select {
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  border: 1.5px solid lightgray;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input:focus,
+.login-form select:focus {
+  outline: none;
+  border-color: lightblue;
+  box-shadow: 0 0 6px rgba(30, 144, 255, 0.5);
+}
+
+.btn {
+  background-color: navy;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+
+
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 0, 128, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn:hover {
+  background-color: lightblue;
+  box-shadow: 0 6px 16px rgba(0, 0, 128, 0.4);
+}
+
+select,
+input[type='text'] {
+  padding: 0.4rem;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.input-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  min-height: 1.25rem;
+  display: none;
+  font-weight: 600;
+}
+
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: navy;
+  color: lightblue;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  position: fixed;
+  height: 100vh;
+  font-weight: 600;
+  user-select: none;
+}
+
+.sidebar h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.sidebar nav {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.sidebar nav a {
+  display: block;
+  color: lightblue;
+  padding: 0.75rem 1rem;
+    border-radius: 10px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: background 0.3s ease;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color: white;
+}
+
+.main-content {
+  margin-left: 260px;
+  flex-grow: 1;
+  padding: 2rem 3rem;
+  overflow-y: auto;
+}
+
+.main-content header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.main-content header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: navy;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info span {
+  font-weight: 600;
+  color: slategray;
+}
+
+  .btn-logout {
+    background-color: red;
+    border: none;
+    padding: 0.5rem 1.1rem;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 1rem;
+    user-select: none;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.6);
+  }
+
+  .btn-logout:hover {
+    background-color: firebrick;
+    box-shadow: 0 6px 15px rgba(220, 38, 38, 0.7);
+  }
+
+  section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(30, 144, 255, 0.15);
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: navy;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
+  }
+
+.create-btn {
+  background-color: navy;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(30, 144, 255, 0.35);
+  transition: background-color 0.3s ease;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  user-select: none;
+}
+
+.create-btn:hover {
+  background-color: royalblue;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+
+table thead tr {
+  background-color: lavender;
+  color: navy;
+  font-weight: 700;
+  text-align: left;
+}
+
+table th,
+
+
+table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid lightgray;
+  vertical-align: middle;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: whitesmoke;
+}
+
+table tbody tr:hover {
+  background-color: lightblue;
+}
+
+
+.actions span {
+  color: blue;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  margin-right: 0.7rem;
+  transition: background-color 0.2s ease;
+  border: 1px solid transparent;
+  display: inline-block;
+}
+
+.actions span:hover {
+  border-color: blue;
+  text-decoration: none;
+}
+
+
+
+
+.user-profile-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(30, 144, 255, 0.15);
+  margin-bottom: 2rem;
+}
+
+.booking-section {
+  display: none;
+}
+
+.booking-section.active {
+  display: block;
+}
+
+.card {
+  background: aliceblue;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+
+.btn-action {
+  color: blue;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  padding: 0.3rem 0.8rem;
+  border-radius: 5px;
+  margin-right: 0.7rem;
+
+  transition: background-color 0.2s ease;
+  border: 1px solid transparent;
+  display: inline-block;
+  background: none;
+  font-size: 1rem;
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  border: none;
+}
+
+.btn-action:hover,
+.btn-action:focus {
+  border-color: blue;
+  text-decoration: none;
+}
+
+.btn-back {
+  background-color: navy;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(30, 144, 255, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+
+.btn-back:hover {
+  background-color: blue;
+}
+
+.login-image {
+  width: 320px;
+  height: auto;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+
+
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+    .sidebar {
+      position: relative;
+      width: 100%;
+      height: auto;
+      padding: 0.5rem 1rem 0.2rem;
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: 1px solid #ccc;
+      gap: 0.5rem;
+    }
+
+    .sidebar h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .sidebar nav {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .sidebar nav a {
+      margin: 0;
+      padding: 0.5rem 0.75rem;
+      flex: 1;
+      text-align: center;
+    }
+
+    .main-content {
+      margin-left: 0;
+      padding: 1rem 1.5rem;
+    }
+
+    .main-content > header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .main-content header h1 {
+    font-size: 1.8rem;
+  }
+
+  .user-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-left,
+  .login-right {
+    flex: none;
+    width: 100%;
+    padding: 2rem 1.5rem;
+  }
+
+  .login-left h1 {
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+  }
+
+  .login-left p {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+
+  .login-right {
+    padding: 2rem 1.5rem;
+    box-shadow: none;
+  }
+
+  .login-form {
+    max-width: 100%;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-spacing: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table thead,
+  table tbody,
+  table tr {
+    display: table-row-group;
+  }
+
+  table th,
+  table td {
+    white-space: nowrap;
+    padding: 0.75rem 1rem;
+  }
+
+  .actions {
+    min-width: 120px;
+  }
+
+  .actions span {
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-spacing: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table thead,
+  table tbody,
+  table tr {
+    display: table-row-group; 
+  }
+
+  table th,
+  table td {
+    white-space: nowrap;
+    padding: 0.75rem 1rem;
+    min-width: 120px; 
+    box-sizing: border-box;
+  }
+
+  .btn.create-btn {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    min-width: auto;
+  }
+
+  .actions {
+    min-width: 140px;
+  }
+
+  .actions span {
+    display: inline-block;
+    margin-bottom: 0.4rem;
+  }
+
+  section {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+

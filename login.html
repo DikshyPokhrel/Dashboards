@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-left">
+  <div class="login-branding">
+    <h1>Cartoon World!</h1>
+    <img src="login.jpeg" alt="Cartoon Image" class="login-image" />
+  </div>
+</div>
+
+
+    <div class="login-right">
+      <form class="login-form" id="loginForm" novalidate>
+        <h2>Login to your account</h2>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required />
+        <div id="email-error" class="input-error"></div>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="********" required />
+        <div id="password-error" class="input-error"></div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      clearErrors();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      let hasError = false;
+
+      if (!email) {
+        showError('email-error', 'Email is required.');
+        hasError = true;
+      } else if (!validateEmail(email)) {
+        showError('email-error', 'email-error', 'Oops! That email does npt look right. Mind checking?');
+        hasError = true;
+      }
+
+      if (!passwordPattern.test(password)) {
+        showError('password-error', 'Make sure your password is strong: 8+ chars, uppercase, number, and special symbol.');
+        hasError = true;
+      }
+
+      if (hasError) return;
+
+
+      window.location.href = 'Admin Dashboard.html';
+    });
+
+    function showError(id, message) {
+      const el = document.getElementById(id);
+      el.textContent = message;
+      el.style.display = 'block';
+    }
+
+    function clearErrors() {
+      ['email-error', 'password-error'].forEach(id => {
+        const el = document.getElementById(id);
+        el.textContent = '';
+        el.style.display = 'none';
+      });
+    }
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+  </script>
+</body>
+</html>
